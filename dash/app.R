@@ -13,6 +13,16 @@ ui <- dashboardPage(
     menuItem("Body mass ", tabName = "bodymass", icon = icon("crow"))
   ),
   dashboardBody(
+      tags$head( 
+          tags$style(HTML(".main-sidebar { font-size: 16px; }")) #change the font size to 16
+      ),
+      fluidRow(infoBox(
+          "Male penguins", length(which(penguins$sex == "male")), icon = icon("air-freshener")
+          ),
+               infoBox(
+                   "Female penguins", length(which(penguins$sex == "female")), icon = icon("music")
+                   )
+          ), #/fluidRow
       tabItems(
     tabItem(
       "lendep", 
