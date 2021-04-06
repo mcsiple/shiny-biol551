@@ -13,33 +13,37 @@ ui <- dashboardPage(
     menuItem("Body mass ", tabName = "bodymass", icon = icon("crow"))
   ),
   dashboardBody(
-      tags$head( 
-          tags$style(HTML(".main-sidebar { font-size: 16px; }")) #change the font size to 16
-      ),
-      fluidRow(infoBox(
-          "Male penguins", length(which(penguins$sex == "male")), icon = icon("air-freshener")
-          ),
-               infoBox(
-                   "Female penguins", length(which(penguins$sex == "female")), icon = icon("music")
-                   )
-          ), #/fluidRow
-      tabItems(
-    tabItem(
-      "lendep", 
-      fluidPage(
-          h1("Bil length and depth"),
-      box(selectInput("species", "Species:", unique(penguins$species)), width = 8),
-      box(plotOutput("correlation_plot"), width = 8)
-    )
+    tags$head(
+      tags$style(HTML(".main-sidebar { font-size: 16px; }")) # change the font size to 16
     ),
-    tabItem(
-      "bodymass", 
-      fluidPage(h1("Body mass"),
-      box(selectInput("sex", "Sex:", c("female", "male")), width = 8),
-      box(plotOutput("bodymass_plot"), width = 8)
-    ) # /fluidPage
-    )# /tabItem
-  ) # /tabItems
+    fluidRow(
+      infoBox(
+        "Male penguins", length(which(penguins$sex == "male")),
+        icon = icon("air-freshener"), fill = TRUE,color = "maroon"
+      ),
+      infoBox(
+        "Female penguins", length(which(penguins$sex == "female")),
+        icon = icon("music"), fill = TRUE, color = "light-blue"
+      )
+    ), # /fluidRow
+    tabItems(
+      tabItem(
+        "lendep",
+        fluidPage(
+          h1("Bil length and depth"),
+          box(selectInput("species", "Species:", unique(penguins$species)), width = 8),
+          box(plotOutput("correlation_plot"), width = 8)
+        )
+      ),
+      tabItem(
+        "bodymass",
+        fluidPage(
+          h1("Body mass"),
+          box(selectInput("sex", "Sex:", c("female", "male")), width = 8),
+          box(plotOutput("bodymass_plot"), width = 8)
+        ) # /fluidPage
+      ) # /tabItem
+    ) # /tabItems
   )
 )
 
