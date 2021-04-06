@@ -315,11 +315,11 @@ class: center, middle
 
 # Maps in Shiny with `leaflet`
 
-Leaflet is an open-source JavaScript library that makes interactive maps.
+- Leaflet is an open-source JavaScript library that makes interactive maps.
 
-It's *very cool*! And the `leaflet` R package integrates well with Markdown files and Shiny apps so you can show spatial data.
+- It's *very cool*! And the `leaflet` R package integrates well with Markdown files and Shiny apps so you can show spatial data.
 
-It gets fancy very fast. [Here](https://rstudio.github.io/leaflet/) is the guide for using `leaflet` in R and integrating it with Shiny.
+- It gets fancy very fast. [Here](https://rstudio.github.io/leaflet/) is the guide for using `leaflet` in R and integrating it with Shiny.
 
 ---
 
@@ -335,9 +335,9 @@ Shiny dashboards with `shinydashboard`
 
 ---
 
-# What are dashboards useful for?
+# Why make a dashboard?
 
-Show a dataset several ways in one place (and automatically update it!)
+To show a dataset several ways in one place (and automatically update it!)
 Use it for:
 
 - communicating data in a polished way
