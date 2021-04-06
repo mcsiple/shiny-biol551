@@ -2,7 +2,7 @@
 title: "Intro to Shiny"
 subtitle: "Communicate your science, use R, and have fun!"
 author: "Megsie Siple"
-institute: "NOAA AFSC - RACE/GAP"
+institute: "NOAA AFSC"
 date: "2021/04/07 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
@@ -17,7 +17,6 @@ output:
 class: center, middle
 
 # Hello! 
-
 
 ---
 
@@ -91,17 +90,7 @@ Shiny can be a little gnarly at first.
 --
 
 If you'd like to follow along, clone this directory and follow the examples!
-[https://github.com/mcsiple/shinyoverview](https://github.com/mcsiple/shinyoverview)
-
---
-
-There are many other things available in the repo that we won't cover today, but examples are included so you can try them on your own:
-
-> 4. *Translating your Shiny apps using `{shiny.18n}`*
-
-> 5. *Using Shiny to supercharge your remote teaching with `{learnr}`*
-
-> 6. *Generating Markdown reports from Shiny*
+[https://github.com/mcsiple/shinyoverview](https://github.com/mcsiple/shiny-biol551)
 
 ---
 
@@ -323,254 +312,6 @@ class: center, middle
 
 ---
 
-class: center, middle, inverse
-
-# Getting data into and out of Shiny
-
-
----
-
-
-# Get data into a Shiny app
-
-Shiny can accept data from various file types. 
-
-You can get data into Shiny from:
-- a file the user uploads
-- a database
-- a persistent file packaged with your app
-
----
-
-# User uploads data
-If you want to design your app so that people can bring in their own data:
-
-Add a file upload input in the UI using the function `fileInput()`. In the `server` function, access the uploaded files via `input$mydata`:
-```{r eval=FALSE}
-ui <- fluidPage(
-  titlePanel("Uploading Files"),
-  sidebarLayout(
-    sidebarPanel(
-      # refer to input$mydata in the server code to reference this object:
-      fileInput("mydata", "Choose CSV File",
-                multiple = FALSE,
-                accept = c("text/csv",
-                         "text/comma-separated-values,text/plain",
-                         ".csv")),
-```
-
----
-
-# Put the data on the server
-
-You can publish small data files that sit on the server with your app. You can load these data at the top of the app file (if server and ui are both located in **app.R**) or in the **ui.R** file if you're using separate files for ui and server.  
-
---
-
-You can also link Shiny to a database using `dplyr` and `DBI` (for external databases). More on that [here](https://shiny.rstudio.com/articles/overview.html).
-
----
-
-# More on data storage in Shiny
-
-Dean Attali's [Persistent Data Storage With Shiny](https://daattali.com/shiny/persistent-data-storage/) app 
-
-[This](https://shiny.rstudio.com/articles/persistent-data-storage.html) blog post about data storage in Shiny (also by Dean Attali)
-
-RStudio's [best practices for dashboards](https://db.rstudio.com/best-practices/dashboards/) shows how to connect a `shinydashboard` to a database
-
----
-
-# Downloading from Shiny
-
-You can download data from a Shiny app using `downloadLink()` or `downloadButton()` in the ui and `downloadHandler()` in the server:
-
-```{r eval=FALSE}
-ui <- fluidPage(
-  downloadLink("downloadData", "Download")
-)
-
-server <- function(input, output) {
-  # Our dataset
-  data <- mtcars
-
-  output$downloadData <- downloadHandler(
-    filename = function() {
-      paste("data-", Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-      write.csv(data, file)
-    }
-  )
-}
-```
-
----
-
-# Downloading from Shiny
-
-- Download **CSV or txt files** from Shiny apps
-
---
-
-- Generate reports in Markdown that are knitted to **html** (details on how to do that [here](https://shiny.rstudio.com/articles/generating-reports.html))
-
---
-
-- You can also download **images** that have been generated in the app (e.g., download plots from the app)
-
-
----
-
-class: center, middle
-
-# 02_dataindataout/explore_ram/ui.R
-
-
----
-
-# Sidebar: Shiny dashboards
-
-Show a dataset several ways in one place (and automatically update it!)
-Use it for:
-
-- communicating data in a polished way
-
-- offering access to visualizations from a database
-
-- showing a "data story" in a linear way
-
-![confdash](img/confdash.png)
-
----
-
-class: center, middle
-
-# Lessons I learned from developing a Shiny app
-
-![droplets](https://i.gifer.com/g5.gif)
-
----
-
-# UI is very important
-
-Designing a good ui is hard! And Shiny defaults are not the most intuitive / appealing / accessible version they can be.
-
---
-
-If you are designing an app for management, a good ui is essential.
-
---
-
-- my #1 tip: if you have time, pilot test with subject matter experts AND users
-  
---
-
-- check accessibility using the app's URL using the [Web Accessibility Evaluation (WAVE) Tool](https://wave.webaim.org/)
-
---
-
-- use UX resources if they are available!
-
---
-  
-- if your institution doesn't have UX resources, design pilot testing so that you get helpful feedback on UX:
-  - [18F Methods](https://methods.18f.gov/validate/) and [Maze](https://maze.design/guides/usability-testing/questions/) have great lists of testing questions and methods
-  - 18F Methods also has an [example agreement](https://methods.18f.gov/participant-agreement/) for testers
-  - Depending on the final format, places like  [UsabilityHub](https://usabilityhub.com/) have interfaces that will provide data on clicks and scrolling behavior when testing is remote
-
-
----
-
-# On Monday we talked about
-
-- How to know when a Shiny app is the right tool for the job
-
---
-
-- How to build a basic Shiny app and get data in and out
-
-
----
-
-# Part II
-
-
-- Deploying your Shiny app
-
---
-
-- Building cool/interactive maps using `{leaflet}`
-
---
-
-- Using Shiny to make a tutorial in `{learnr}`
-
---
-
-- ...and then we'll just gaze at some great apps
-
-
----
-
-# Deploying your Shiny app
-
-## Deploy to the cloud
-- Sign up for a free shinyapps.io account
-
-- Install `{rsconnect}` 
-
-- Configure `rsconnect` to use your account using a token from your shinyapps.io account:
-
-![shinyappsio](img/shinyappsio.png)
-
----
-
-# Deploying your Shiny app
-
-## Deploy to the cloud
-- If you add a new token and click 'show', you'll get instructions for how to configure `rsconnect` 
-
-- Configure your rsconnect installation. This will link your shinyapps.io account to your local environment:
-
-```{r eval=FALSE}
-library(rsconnect)
-setAccountInfo(name="<ACCOUNT>", token="<TOKEN>", secret="<SECRET>")`
-```
-
-- You can deploy from within RStudio by clicking the 'Publish' button in the RStudio IDE, or use the console:
-
-```{r eval=FALSE}
-deployApp(server = "shinyapps.io")`
-```
-
-- woo!
-
----
-
-# Deploying your Shiny app 2
-
-## Other options for deployment
-
-- Deploy to an RStudio Connect account (local, commercial option)
-
-- Publish on Shiny Server (local, open source)
-
----
-
-# Getting credit for your Shiny development
-
-If you've put a lot of time into making a Shiny app, you should get credit! 
-The publication/credit avenues are unconventional for Shiny apps, but they DO exist.
-
-- Publish as a package in an open source software journal (e.g., [JOSS](https://joss.theoj.org/) ) (check out the `{golem}` pkg for structuring your files and streamlining production) `r emo::ji("package")`
-
-- Publish code straight from GitHub with a DOI from Zenodo ( [here](https://www.rinproduction.com/en/posts/005-8-tips-for-a-production-ready-shiny-application/) are some good tips for preparing your app for production )
-
-- (for "just for fun" apps): submit your Shiny app to the RStudio [Shiny contest](https://community.rstudio.com/t/shiny-contest-2020-is-here/51002)
-<!-- see if you can get some data on citation rates for JOSS vs zenodo github entry -->
-
----
 
 # Maps in Shiny with `leaflet`
 
@@ -584,14 +325,37 @@ It gets fancy very fast. [Here](https://rstudio.github.io/leaflet/) is the guide
 
 class: center, middle
 
-# 0n_maps/app.R
-
+# 02_maps/app.R
 
 ---
 
 class: center, middle, inverse
 
-# `learnr` demo
+Shiny dashboards with `shinydashboard`
+
+---
+
+# What are dashboards useful for?
+
+Show a dataset several ways in one place (and automatically update it!)
+Use it for:
+
+- communicating data in a polished way
+
+- offering access to visualizations from a database
+
+- showing a "data story" in a linear way
+
+![confdash](img/confdash.png)
+---
+
+class: center, middle, inverse
+
+# 03_dashboards/app.R
+
+---
+
+# Important Shiny lesson: having fun and relaxing are good!
 
 ![duckspirits](https://i.gifer.com/SLcP.gif)
 
@@ -650,3 +414,68 @@ The [Marine Mammal Bycatch Impacts Exploration Tool](https://msiple.shinyapps.io
 ***
 
 Slides created using the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+---
+
+# Deploying your Shiny app
+
+## Deploy to the cloud
+- Sign up for a free shinyapps.io account
+
+- Install `{rsconnect}` 
+
+- Configure `rsconnect` to use your account using a token from your shinyapps.io account:
+
+![shinyappsio](img/shinyappsio.png)
+
+---
+
+class: center, middle, inverse
+
+Extra slides
+
+---
+
+# Deploying your Shiny app
+
+## Deploy to the cloud
+- If you add a new token and click 'show', you'll get instructions for how to configure `rsconnect` 
+
+- Configure your rsconnect installation. This will link your shinyapps.io account to your local environment:
+
+```{r eval=FALSE}
+library(rsconnect)
+setAccountInfo(name="<ACCOUNT>", token="<TOKEN>", secret="<SECRET>")`
+```
+
+- You can deploy from within RStudio by clicking the 'Publish' button in the RStudio IDE, or use the console:
+
+```{r eval=FALSE}
+deployApp(server = "shinyapps.io")`
+```
+
+- woo!
+
+---
+
+# Deploying your Shiny app 2
+
+## Other options for deployment
+
+- Deploy to an RStudio Connect account (local, commercial option)
+
+- Publish on Shiny Server (local, open source)
+
+---
+
+# Getting credit for your Shiny development
+
+If you've put a lot of time into making a Shiny app, you should get credit! 
+The publication/credit avenues are unconventional for Shiny apps, but they DO exist.
+
+- Publish as a package in an open source software journal (e.g., [JOSS](https://joss.theoj.org/) ) (check out the `{golem}` pkg for structuring your files and streamlining production) `r emo::ji("package")`
+
+- Publish code straight from GitHub with a DOI from Zenodo ( [here](https://www.rinproduction.com/en/posts/005-8-tips-for-a-production-ready-shiny-application/) are some good tips for preparing your app for production )
+
+- (for "just for fun" apps): submit your Shiny app to the RStudio [Shiny contest](https://community.rstudio.com/t/shiny-contest-2020-is-here/51002)
+<!-- see if you can get some data on citation rates for JOSS vs zenodo github entry -->
