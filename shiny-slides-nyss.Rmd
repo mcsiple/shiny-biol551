@@ -133,6 +133,11 @@ When we want to make R code accessible outside of an R or RStudio environment. F
 - streamlining certain code-intensive things (like database queries or visualizing bulky simulation outputs)
 
 ---
+class:center, middle, inverse
+
+# Shiny basics
+
+---
 
 # Starting a new Shiny app
 
@@ -311,7 +316,11 @@ class: center, middle
 # 01_basics/app.R
 
 ---
+class:center, middle, inverse
 
+# Interactive maps with `leaflet`
+
+---
 
 # Maps in Shiny with `leaflet`
 
@@ -331,7 +340,7 @@ class: center, middle
 
 class: center, middle, inverse
 
-Shiny dashboards with `shinydashboard`
+# Dashboards with `shinydashboard`
 
 ---
 
@@ -349,7 +358,69 @@ Use it for:
 ![confdash](img/confdash.png)
 ---
 
-class: center, middle, inverse
+# Making a shiny dashboard
+
+- Shiny dashboards are just like Shiny apps, so you start them the same way you would a basic Shiny app
+
+- In RStudio:
+> File --> New File --> Shiny Web App
+
+- Load the following packages:
+```{r eval=FALSE}
+library(tidyverse)
+library(shiny)
+library(shinydashboard)
+```
+
+- Now you're ready to make a Shiny dashboard!
+
+---
+
+# Anatomy of a dashboard
+
+- a `dashboardPage` requires three components: a header, a sidebar, and a body.
+
+--
+
+```{r eval=FALSE}
+ui <- dashboardPage(
+  dashboardHeader(),
+  dashboardSidebar(),
+  dashboardBody()
+)
+```
+--
+
+- You can populate these with shiny-esque items (e.g., `PlotOutput`) or items unique to `shinydashboard`
+
+---
+
+# Special widgets for dashboards - sidebar and header
+
+- Dashboards have lots of fun menus
+
+  - Notification menus (containing `notificationItem()` s)
+  
+  - Task menus (containing `taskItem()` s)
+  
+  - Sidebar menus (containing `menuItem()`s)
+
+---
+
+
+# Special widgets for dashboards - body
+
+- There are also some fun body contents
+
+  - `tabBox`
+  
+  - `infoBox`
+  
+  - `valueBox`
+
+---
+
+class: center, middle
 
 # 03_dashboards/app.R
 
